@@ -1,0 +1,6 @@
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+pydantic==2.6.1
+numpy==1.26.4
+scipy==1.12.0
+piper-tts==1.2.0
