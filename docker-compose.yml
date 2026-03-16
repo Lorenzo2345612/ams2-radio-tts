@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  piper-tts:
+    build: .
+    container_name: piper-tts-service
+    ports:
+      - "8000:8000"
+    environment:
+      # Directory containing voice models (en_US + es_MX)
+      - MODELS_DIR=/app/models
+      # Base URL for generated audio links (adjust for reverse proxy)
+      - BASE_URL=http://localhost:8000
+    volumes:
+      # Persist generated audio files
+      - ./audio:/audio
+    restart: unless-stopped
+    # CPU-only, no GPU required
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
